@@ -29,6 +29,15 @@ export const UseState = ({name}) => {
     const onWrite = (newValue) => {
         setState({...state, value: newValue})
     }
+    const onCheck = () => {
+        setState({...state, loading: true, error: false})
+    }
+    const onDelete = () => {
+        setState({...state, deleted: true})
+    }
+    const onReset = () => {
+        setState({value: "", deleted: false, confirmed: false,})
+    }
 
     useEffect(() => {
         console.log("Empezando el efecto")
@@ -69,7 +78,10 @@ export const UseState = ({name}) => {
                 value={state.value}
                 placeholder="Codigo de seguridad" 
                 type="text" />
-                <button className="bg-white text-black rounded-xl p-2 disabled:opacity-50" onClick={() => setState({...state, loading: true, error: false})} disabled={state.value == "" || state.loading}>Comprobar</button>
+                <button 
+                className="bg-white text-black rounded-xl p-2 disabled:opacity-50" 
+                onClick={() => onCheck()} 
+                disabled={state.value == "" || state.loading}>Comprobar</button>
             </div>
         )
     }else if(state.confirmed && !state.deleted){
@@ -79,8 +91,8 @@ export const UseState = ({name}) => {
                 <p className="text-gray-300">¿Seguro que quieres eliminar UseState?</p>
 
                 <div className="flex gap-3">
-                    <button className="bg-white text-black rounded-xl p-2" onClick={() => setState({...state, deleted: true})}>Si, eliminar</button>
-                    <button className="bg-white text-black rounded-xl p-2" onClick={() => setState({...state, value: "", confirmed: false})}>No, volver</button>
+                    <button className="bg-white text-black rounded-xl p-2" onClick={() => onDelete()}>Si, eliminar</button>
+                    <button className="bg-white text-black rounded-xl p-2" onClick={() => onReset()}>No, volver</button>
                 </div>
             </div>
         )
@@ -90,7 +102,7 @@ export const UseState = ({name}) => {
             <div className="bg-gray-600 text-white flex flex-col items-center justify-center gap-5 p-10">
 
                 <h2 className="text-xl font-bold">{name} fue eliminado</h2>
-                <button className="bg-white text-black rounded-xl p-2" onClick={() => setState({value: "", deleted: false, confirmed: false,})}>Recuperar {name}</button>
+                <button className="bg-white text-black rounded-xl p-2" onClick={() => onReset()}>Recuperar {name}</button>
 
             </div>
         )
